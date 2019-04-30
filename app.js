@@ -1,6 +1,7 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext('2d');
 //context로 라인도 그리고 하는것. 
+const colors = document.getElementsByClassName("jsColor");
 
 //convas에 사이즈 주기,, Pixel manipulating size
 //css는 눈에 보이는 사이즈 이고 여기서 지정해주는 사이즈는 픽셀사이즈
@@ -9,7 +10,7 @@ canvas.height = 550;
 
 //context default
 //선의 색
-ctx.stroStyle="#2c2c2c";
+ctx.strokeStyle="#2c2c2c";
 //linewidth는 선의 굵기를 나타냄
 ctx.lineWidth=2.5;
 
@@ -40,6 +41,11 @@ function onMouseMove(event){
     }
 }
 
+function handleColorClick(event){
+    const color = event.target.style.backgroundColor;
+    ctx.strokeStyle = color;
+}
+
 if(canvas){
     //마우스가 캔버스에 무브할때
     canvas.addEventListener("mousemove",onMouseMove);
@@ -50,3 +56,5 @@ if(canvas){
     //마우스가 캔버스를 벗어날때 ==> 페인팅을 안해 
     canvas.addEventListener("mouseleave", stopPainting)
 }
+
+Array.from(colors).forEach(color => color.addEventListener("click", handleColorClick))
