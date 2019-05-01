@@ -16,3 +16,4 @@ canvas 참고사용
 - toDataURL()
 ...
 
+[try it!] (https://boreumlee.github.io/paintjs/)
