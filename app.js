@@ -4,15 +4,21 @@ const ctx = canvas.getContext('2d');
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 
 //convas에 사이즈 주기,, Pixel manipulating size
 //css는 눈에 보이는 사이즈 이고 여기서 지정해주는 사이즈는 픽셀사이즈
 canvas.width = 550;
 canvas.height = 550;
 
+//바탕색을 default로 하얀색으로 정해줘
+ctx.fillStyle="white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
 //context default
-//선의 색
+//선의 색, 바탕의 색
 ctx.strokeStyle="#2c2c2c";
+ctx.fillStyle="#2c2c2c";
 //linewidth는 선의 굵기를 나타냄
 ctx.lineWidth=2.5;
 
@@ -70,6 +76,20 @@ function handleCanvasClick(){
     }
 }
 
+function handelCM(event){
+    //우클릭 금지
+    event.preventDefault();
+}
+
+function handleSaveClick(){
+    const image = canvas.toDataURL();
+    //여기서 a태그가 다운로드하는것도 있어서 그걸 사용해서 다운로드 할거임
+    const link = document.createElement('a');
+    link.href = image;
+    link.download = "myPaint[👩‍🎨]";
+    link.click();
+}
+
 if(canvas){
     //마우스가 캔버스에 무브할때
     canvas.addEventListener("mousemove",onMouseMove);
@@ -81,6 +101,8 @@ if(canvas){
     canvas.addEventListener("mouseleave", stopPainting);
     //캔버스에 fill 하는 click.
     canvas.addEventListener("click",handleCanvasClick);
+    //우클릭 감지
+    canvas.addEventListener("contextmenu",handelCM);
 }
 
 Array.from(colors).forEach(color => 
@@ -94,4 +116,8 @@ if(range){
 
 if(mode){
     mode.addEventListener("click", handleModeClick)
+}
+
+if(saveBtn) {
+    saveBtn.addEventListener("click",handleSaveClick);
 }
