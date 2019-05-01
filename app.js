@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d');
 //context로 라인도 그리고 하는것. 
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
+const mode = document.getElementById("jsMode");
 
 //convas에 사이즈 주기,, Pixel manipulating size
 //css는 눈에 보이는 사이즈 이고 여기서 지정해주는 사이즈는 픽셀사이즈
@@ -16,6 +17,7 @@ ctx.strokeStyle="#2c2c2c";
 ctx.lineWidth=2.5;
 
 let painting = false;
+let filling = false;
 
 function stopPainting(){
     painting = false;
@@ -45,11 +47,27 @@ function onMouseMove(event){
 function handleColorClick(event){
     const color = event.target.style.backgroundColor;
     ctx.strokeStyle = color;
+    ctx.fillStyle = color;
 }
 
 function handleRangeChange(event){
     const rangeValue = event.target.value;
     ctx.lineWidth = rangeValue;
+}
+
+function handleModeClick(){
+    if(filling === true){
+        filling = false;
+        mode.innerText = "Fill"
+    } else {
+        filling = true;
+        mode.innerText = "Paint"
+    }
+}
+function handleCanvasClick(){
+    if(filling){
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
 }
 
 if(canvas){
@@ -61,6 +79,8 @@ if(canvas){
     canvas.addEventListener("mouseup",stopPainting);
     //마우스가 캔버스를 벗어날때 ==> 페인팅을 안해 
     canvas.addEventListener("mouseleave", stopPainting);
+    //캔버스에 fill 하는 click.
+    canvas.addEventListener("click",handleCanvasClick);
 }
 
 Array.from(colors).forEach(color => 
@@ -70,4 +90,8 @@ Array.from(colors).forEach(color =>
 if(range){
     //range이벤트는 input에 반응함
     range.addEventListener("input", handleRangeChange);
+}
+
+if(mode){
+    mode.addEventListener("click", handleModeClick)
 }
